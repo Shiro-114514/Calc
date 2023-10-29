@@ -3,8 +3,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 public class gui extends JFrame implements ActionListener {
+     JTextArea text;
+     JButton button_c;
+     JButton button_ac;
     public static void main(String[] args){
         gui frame = new gui("Calculator on Java");
         frame.setVisible(true);
@@ -16,6 +18,8 @@ public class gui extends JFrame implements ActionListener {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel();
+        text = new JTextArea();
+        text.setEditable(false);
         panel.setLayout(null);
 
         //button 0 ~ 9
@@ -36,13 +40,35 @@ public class gui extends JFrame implements ActionListener {
         JButton button_d = new JButton("/");
         JButton button_r = new JButton("%");
         JButton button_e = new JButton("=");
-        JButton button_c = new JButton("C");
-        JButton button_ac = new JButton("AC");
+        button_c = new JButton("C");
+        button_ac = new JButton("AC");
+
+        if(text.getSelectionStart() == 0){
+             button_c.setEnabled(false);
+             button_ac.setEnabled(false);
+        }
 
         button1.addActionListener(this);
         button2.addActionListener(this);
+        button3.addActionListener(this);
+        button4.addActionListener(this);
+        button5.addActionListener(this);
+        button6.addActionListener(this);
+        button7.addActionListener(this);
+        button8.addActionListener(this);
+        button9.addActionListener(this);
+        button0.addActionListener(this);
         button_a.addActionListener(this);
+        button_m.addActionListener(this);
+        button_s.addActionListener(this);
+        button_d.addActionListener(this);
+        button_r.addActionListener(this);
+        button_e.addActionListener(this);
+        button_c.addActionListener(this);
+        button_ac.addActionListener(this);
 
+        //座標設定
+        text.setBounds(10,50,300,25);
         button1.setBounds(10,100,50,50);
         button2.setBounds(70,100,50,50);
         button3.setBounds(130,100,50,50);
@@ -62,6 +88,7 @@ public class gui extends JFrame implements ActionListener {
         button_c.setBounds(200,100,50,50);
         button_ac.setBounds(260,100,50,50);
 
+        panel.add(text);
         panel.add(button1);
         panel.add(button2);
         panel.add(button3);
@@ -86,7 +113,27 @@ public class gui extends JFrame implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e){
-        System.out.println(e.getActionCommand());
-        JOptionPane.showMessageDialog(this,"pushed");
+          text.setCaretPosition(text.getText().length());
+          String str = e.getActionCommand();
+          if(!str.equals("C")) {
+               if(!str.equals("AC")){
+                    text.append(str);
+               }
+               else {
+                    text.setText("");
+               }
+          }
+          else {
+               text.replaceRange("",text.getSelectionEnd() - 1,text.getSelectionEnd() );
+          }
+
+          if(text.getSelectionStart() != 0){
+               button_c.setEnabled(true);
+               button_ac.setEnabled(true);
+          }
+          else {
+               button_c.setEnabled(false);
+               button_ac.setEnabled(false);
+          }
     }
 }
